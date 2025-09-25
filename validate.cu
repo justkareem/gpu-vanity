@@ -7,6 +7,10 @@ validate.cu - Validation tests for Ed25519 implementation
 #include <cuda_runtime.h>
 #include "test_vectors.h"
 
+// Device constant memory for test vectors
+__constant__ TestVector d_test_vectors[10];  // Enough space for test vectors
+__constant__ int d_num_test_vectors;
+
 // Copy field element and point operation functions from main file
 // (In a real implementation, these would be in shared headers)
 
@@ -95,16 +99,16 @@ __global__ void validate_kernel(bool *results) {
     
     if (tid == 2) {
         // Test scalar multiplication with known vectors
-        for (int i = 0; i < num_test_vectors; i++) {
+        for (int i = 0; i < d_num_test_vectors; i++) {
             ge_ext result;
             uint8_t computed_pubkey[32];
             
-            fixed_base_mul(result, test_vectors[i].private_key);
+            fixed_base_mul(result, d_test_vectors[i].private_key);
             compress_point_to_pubkey(computed_pubkey, result);
             
             bool match = true;
             for (int j = 0; j < 32; j++) {
-                if (computed_pubkey[j] != test_vectors[i].public_key[j]) {
+                if (computed_pubkey[j] != d_test_vectors[i].public_key[j]) {
                     match = false;
                     break;
                 }
@@ -119,6 +123,10 @@ int main() {
     
     const int num_tests = 10;
     bool *d_results, *h_results;
+    
+    // Copy test vectors to device constant memory
+    cudaMemcpyToSymbol(d_test_vectors, test_vectors, sizeof(test_vectors));
+    cudaMemcpyToSymbol(d_num_test_vectors, &num_test_vectors, sizeof(int));
     
     // Allocate memory
     cudaMalloc(&d_results, num_tests * sizeof(bool));

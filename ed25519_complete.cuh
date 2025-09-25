@@ -342,7 +342,7 @@ __device__ uint32_t fe_isnonzero(const fe_t &f) {
 
 // Square root computation
 __device__ int fe_sqrt(fe_t &out, const fe_t &a) {
-    fe_t exp, x, b, t0, t1;
+    fe_t x, t0, t1;
     
     // Try x = a^((p+3)/8)
     fe_copy(t0, a);
@@ -444,7 +444,7 @@ __device__ void ge_p3_tobytes(uint8_t s[32], const ge_ext &h) {
 
 // Decompress point from bytes
 __device__ int ge_frombytes_negate_vartime(ge_ext &h, const uint8_t s[32]) {
-    fe_t u, v, v3, vxx, check, y, y_squared;
+    fe_t u, v, v3, y, y_squared;
     uint32_t sign;
     
     // Extract y coordinate and sign bit

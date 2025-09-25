@@ -48,8 +48,7 @@ struct MatchBuffer {
 // ----------------------- Device-side precomputed table ---------------------------------
 __constant__ ge_ext d_precomp[TABLE_SIZE];
 
-// Base58 alphabet
-__constant__ char base58_alphabet[59] = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
+// Note: base58_alphabet is defined in base58.cuh
 
 // ----------------------- Device: field primitives ---------------------------
 
