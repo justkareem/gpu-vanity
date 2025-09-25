@@ -31,12 +31,12 @@ __global__ void benchmark_kernel(uint64_t nonce_base, uint64_t *results) {
         
         // Simulate prefix check
         if ((nonce & 0xFFFFFF) == 0x123456) {  // Rare condition
-            atomicAdd(&results[0], 1);
+            atomicAdd((unsigned long long*)&results[0], 1ULL);
         }
     }
     
     // Count total operations performed
-    atomicAdd(&results[1], operations);
+    atomicAdd((unsigned long long*)&results[1], (unsigned long long)operations);
 }
 
 class GPUBenchmark {

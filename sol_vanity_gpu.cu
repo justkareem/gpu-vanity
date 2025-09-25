@@ -155,7 +155,7 @@ __device__ inline void fe_sub(fe_t &out, const fe_t &a, const fe_t &b) {
 __device__ inline void fe_invert(fe_t &out, const fe_t &a) {
     // Fermat's little theorem: a^(p-2) = a^(-1) mod p
     // p-2 = 2^255 - 21 for Ed25519
-    fe_t z2, z9, z11, z2_5_0, z2_10_0, z2_20_0, z2_50_0, z2_100_0, t0, t1;
+    fe_t z2, z9, z11, z2_5_0, t0, t1;
     
     fe_sq(z2, a);                 // 2^1
     fe_sq(t1, z2);                // 2^2
