@@ -18,6 +18,7 @@ Compile with: nvcc -O3 -arch=sm_86 sol_vanity_gpu.cu -o sol_vanity_gpu
 #include <vector>
 #include <cuda.h>
 #include <cuda_runtime.h>
+#include "base58.cuh"
 
 // ----------------------------- Config -------------------------------------------------
 constexpr int THREADS_PER_BLOCK = 256;
